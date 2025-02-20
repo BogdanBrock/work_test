@@ -30,8 +30,21 @@ git clone git@github.com:BogdanBrock/work_test.git
 docker compose up
 ```
 
-- После того как докер-контейнеры запустились, то можно
-открыть другое окно и применить миграции командой:
+- После того как докер-контейнеры будут активированы, 
+открываем другое окно и для лучшего отображения админ-зоны, 
+мы можем собрать статику командой:
+```bash
+docker compose exec backend python manage.py collectstatic
+```
+
+- После сбора, мы должны передать ее в контейнер nginx,
+после чего статика будет раздаваться, команда для
+перемещения статики:
+```bash
+docker compose exec backend cp -r /app/collected_static/. /backend_static/static/
+```
+
+- Применение миграций командой:
 ```bash
 docker compose exec backend python manage.py makemigrations
 ```
